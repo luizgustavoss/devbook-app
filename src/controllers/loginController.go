@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"bytes"
+	"devbookapp/src/config"
 	"devbookapp/src/models"
 	"devbookapp/src/responses"
+	"devbookapp/src/security"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -23,9 +25,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	url := fmt.Sprintf("%s/login", config.ApiUrl)
 	response, error := http.Post(
-		"http://localhost:5000/login",
-		"application/json",
+		url, "application/json",
 		bytes.NewBuffer(credentials))
 	if error != nil {
 		responses.JsonResponse(w, http.StatusInternalServerError, responses.ResponseError{Error: error.Error()})
@@ -43,6 +45,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		responses.JsonResponse(w, http.StatusOK, nil)
+		if error = security.SetAuthCookie(w, token.Token, token.UserId); error != nil {
+			responses.JsonResponse(w, http.StatusBadRequest, responses.ResponseError{Error: error.Error()})
+			return
+		}
+
+		responses.JsonResponse(w, http.StatusNoContent, nil)
 	}
 }

@@ -14,6 +14,6 @@ function login(event) {
         window.location = "/home"
     }).fail(function(error){
         console.log(error)
-        alert("Falha no login!")
+        Swal.fire( "Ops!", "Falha no login!", "error" );
     });
 }

@@ -26,14 +26,12 @@ func Load() {
 		log.Fatal(error)
 	}
 
-	Port, error = strconv.Atoi(os.Getenv("API_PORT"))
+	Port, error = strconv.Atoi(os.Getenv("APP_PORT"))
 	if error != nil {
-		Port = 9000 // assumes default port number
+		Port = 3000 // assumes default port number
 	}
 
 	ApiUrl = os.Getenv("API_URL")
-	if error != nil {
-		log.Fatal(error)
+	HashKey = []byte(os.Getenv("HASH_KEY"))
+	BlockKey = []byte(os.Getenv("BLOCK_KEY"))
 	}
-
-}

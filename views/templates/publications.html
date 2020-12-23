@@ -1,0 +1,44 @@
+{{ define "publication-likes" }}
+<i class="far fa-thumbs-up like-publication" style="cursor: pointer;"></i>
+<pan> {{ .Likes }} </pan>
+{{ end }}
+
+{{ define "publication-edit" }}
+<a href="/publications/{{ .ID }}/edit"><i class="far fa-edit"></i></a>
+{{ end }}
+
+{{ define "publication-delete" }}
+<i class="far fa-trash-alt text-danger delete-publication" style="cursor: pointer;"></i>
+{{ end }}
+
+
+{{ define "publication-header" }}
+
+<h3 class="display-4">{{ .Title }}</h3>
+<p class="lead">{{ .Content }}</p>
+<a href="/users/{{ .AuthorId }}" style="text-decoration: none">{{ .AuthorNick }} - {{ .CreatedAt.Format "02-01-2006" }}</a>
+<hr class="my-4">
+
+{{ end }}
+
+
+{{ define "authorized-publication" }}
+<div class="bg-light p-5 rounded-lg m-3" data-publication-id="{{ .ID }}">
+    {{ template "publication-header" . }}
+    <p>
+        {{ template "publication-likes" . }}  |
+        {{ template "publication-edit" . }}  |
+        {{ template "publication-delete" . }}
+    </p>
+</div>
+{{ end }}
+
+
+{{ define "non-authorized-publication" }}
+<div class="bg-light p-5 rounded-lg m-3" data-publication-id="{{ .ID }}">
+    {{ template "publication-header" . }}
+    <p>
+        {{ template "publication-likes" . }}
+    </p>
+</div>
+{{ end }}

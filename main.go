@@ -1,7 +1,9 @@
 package main
 
 import (
+	"devbookapp/src/config"
 	"devbookapp/src/router"
+	"devbookapp/src/security"
 	"devbookapp/src/utils"
 	"fmt"
 	"log"
@@ -16,9 +18,13 @@ func init(){
 
 func main() {
 
-	fmt.Println("DevBook Web App Init")
+	config.Load()
+	security.ConfigureSecureCookie()
 
 	router := router.GetRouter()
 
-	log.Fatal(http.ListenAndServe(":3000", router))
+	log.Fatal(http.ListenAndServe(
+		fmt.Sprintf(":%d", config.Port), router))
+
+	fmt.Sprintf("Listening on port %d", config.Port)
 }
